@@ -21,24 +21,28 @@ const (
 )
 
 type logger struct {
-	logc  zerolog.Logger
-	level Level
+	logc   zerolog.Logger
+	level  Level
+	active bool
 }
 
-func newLogger() *logger {
-
+func newLogger() Logger {
 	return &logger{
 		logc: zerolog.New(os.Stdout).With().Timestamp().Logger(),
+		active: false,
 	}
 }
 
-func (log *logger) Debug() *logger {
-	log.level = logger.DebugLevel
+func (log *logger) Debug() Logger {
+	log.level = DebugLevel
+	if log.logc.GetLevel() <= zerolog.DebugLevel {
+		log.active = true
+	}
 	return log
 }
 
-
 func (log *logger) Msg(message string) {
-	logc.Debug().Msg(message)
+	if log.active {
+		log.logc.Debug().Msg(message)
+	}
 }
-
