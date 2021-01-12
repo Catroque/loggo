@@ -1,7 +1,7 @@
 package logger
 
 type Logger interface {
-	Debug() *Logger
+	Debug() Logger
 }
 
 func New() Logger {
