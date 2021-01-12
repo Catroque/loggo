@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/ademirfteo/gologwrp/pkg/logger"
+	"github.com/Catroque/loggo/pkg/logger"
 )
 
 func main() {

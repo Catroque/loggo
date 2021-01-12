@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	logger "github.com/Catroque/loggo"
+	logger "github.com/Catroque/loggo/pkg/logger"
 )
 
 func main() {
