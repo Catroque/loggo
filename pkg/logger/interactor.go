@@ -1,14 +1,23 @@
 package logger
 
 type Logger interface {
-	Debug() Registry
+    Debug() Registry
+    Info()  Registry
+    Warn()  Registry
+    Error() Registry
+    Fatal() Registry
 }
 
 func New() Logger {
-	return newLogger()
+    return newLogger()
 }
 
 type Registry interface {
-	Stack() Registry
-	Msg(string)
+    Stack() Registry
+
+    Fields(fields map[string]interface{}) Registry
+
+    Msg(message string)
+    Msgf(message string, args ...interface{})
 }
+

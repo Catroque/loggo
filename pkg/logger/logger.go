@@ -40,19 +40,47 @@ func newLogger() Logger {
 
 func newRegistry() *registry {
 	return &registry{
+		loge: nil,
+		level: NoLevel,
 		active: false,
 	}
 }
 
-func (log *logger) Debug() Registry {
-	reg := newRegistry()
-	reg.level = DebugLevel
+func (reg *registry) setLevel(log *logger, level Level) *registry {
 	if log.logc.GetLevel() <= zerolog.DebugLevel {
-		reg.loge = zl.Debug()
+		reg.loge   = zl.Debug()
+		reg.level  = level
 		reg.active = true
 	}
 	return reg
 }
+
+
+func (log *logger) Debug() Registry {
+	reg := newRegistry().setLevel(log, DebugLevel)
+	return reg
+}
+
+func (log *logger) Info() Registry {
+	reg := newRegistry().setLevel(log, InfoLevel)
+	return reg
+}
+
+func (log *logger) Warn() Registry {
+	reg := newRegistry().setLevel(log, WarnLevel)
+	return reg
+}
+
+func (log *logger) Error() Registry {
+	reg := newRegistry().setLevel(log, ErrorLevel)
+	return reg
+}
+
+func (log *logger) Fatal() Registry {
+	reg := newRegistry().setLevel(log, FatalLevel)
+	return reg
+}
+
 
 func (reg *registry) Stack() Registry {
 	if reg.active {
@@ -61,8 +89,21 @@ func (reg *registry) Stack() Registry {
 	return reg
 }
 
+func (reg *registry) Fields(fields map[string]interface{}) Registry {
+	if reg.active {
+		reg.loge.Fields(fields)
+	}
+	return reg
+}
+
 func (reg *registry) Msg(message string) {
 	if reg.active {
 		reg.loge.Msg(message)
+	}
+}
+
+func (reg *registry) Msgf(message string, args ...interface{}) {
+	if reg.active {
+		reg.loge.Msgf(message, args...)
 	}
 }
