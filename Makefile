@@ -14,9 +14,6 @@
 APP = main
 
 all:
-	go build -o dist/$(APP) cmd/main.go 
-
-ex:
 	go build -o dist/$(APP) examples/main.go 
 
 exec:

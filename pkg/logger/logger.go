@@ -27,6 +27,7 @@ type logger struct {
 }
 
 func newLogger() Logger {
+	//zerolog.SetGlobalLevel(zerolog.InfoLevel)
 	return &logger{
 		logc: zerolog.New(os.Stdout).With().Timestamp().Logger(),
 		active: false,
