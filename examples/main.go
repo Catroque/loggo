@@ -11,7 +11,7 @@ func main() {
 	fmt.Println("== Begin")
 
 	log := logger.New()
-	log.Debug().Msg("Test simple debug level log.")
+	log.Debug().Stack().Msg("Test simple debug level log.")
 
 	fmt.Println("== End")
 }

@@ -4,6 +4,7 @@ import (
 	"os"
 
 	"github.com/rs/zerolog"
+	zl "github.com/rs/zerolog/log"
 )
 
 type Level uint8
@@ -22,6 +23,10 @@ const (
 
 type logger struct {
 	logc   zerolog.Logger
+}
+
+type registry struct {
+	loge   *zerolog.Event
 	level  Level
 	active bool
 }
@@ -30,20 +35,34 @@ func newLogger() Logger {
 	//zerolog.SetGlobalLevel(zerolog.InfoLevel)
 	return &logger{
 		logc: zerolog.New(os.Stdout).With().Timestamp().Logger(),
+	}
+}
+
+func newRegistry() *registry {
+	return &registry{
 		active: false,
 	}
 }
 
-func (log *logger) Debug() Logger {
-	log.level = DebugLevel
+func (log *logger) Debug() Registry {
+	reg := newRegistry()
+	reg.level = DebugLevel
 	if log.logc.GetLevel() <= zerolog.DebugLevel {
-		log.active = true
+		reg.loge = zl.Debug()
+		reg.active = true
 	}
-	return log
+	return reg
 }
 
-func (log *logger) Msg(message string) {
-	if log.active {
-		log.logc.Debug().Msg(message)
+func (reg *registry) Stack() Registry {
+	if reg.active {
+		reg.loge.Caller()
+	}
+	return reg
+}
+
+func (reg *registry) Msg(message string) {
+	if reg.active {
+		reg.loge.Msg(message)
 	}
 }
