@@ -4,7 +4,7 @@ import (
 	"os"
 
 	"github.com/rs/zerolog"
-	zl "github.com/rs/zerolog/log"
+	//zl "github.com/rs/zerolog/log"
 )
 
 type Level uint8

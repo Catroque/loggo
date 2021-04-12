@@ -16,6 +16,9 @@ APP = main
 all:
 	go build -o dist/$(APP) examples/main.go 
 
+debug:
+	go build -gcflags -m -o dist/$(APP) examples/main.go
+
 exec:
 	dist/$(APP)
 

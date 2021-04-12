@@ -10,8 +10,8 @@ func main() {
 
 	fmt.Println("== Begin")
 
-	log := logger.New()
-	log.Debug().Stack().Msg("Test simple debug level log.")
+	log := logger.New().SetLevel(logger.InfoLevel)
+	log.Info().Stack().Msg("Test simple debug level log.")
 
 	fmt.Println("== End")
 }

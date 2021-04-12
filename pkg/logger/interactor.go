@@ -1,6 +1,7 @@
 package logger
 
 type Logger interface {
+	SetLevel(level Level) Logger
     Debug() Registry
     Info()  Registry
     Warn()  Registry
