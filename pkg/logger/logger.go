@@ -32,7 +32,7 @@ type registry struct {
 }
 
 func newLogger() Logger {
-	//zerolog.SetGlobalLevel(zerolog.InfoLevel)
+	
 	return &logger{
 		logc: zerolog.New(os.Stdout).With().Timestamp().Logger(),
 	}
@@ -47,14 +47,28 @@ func newRegistry() *registry {
 }
 
 func (reg *registry) setLevel(log *logger, level Level) *registry {
-	if log.logc.GetLevel() <= zerolog.DebugLevel {
-		reg.loge   = zl.Debug()
-		reg.level  = level
-		reg.active = true
+	switch level {
+		case DebugLevel:
+			reg.loge = log.logc.Debug()
+		case InfoLevel:
+			reg.loge = log.logc.Info()
+		case WarnLevel:
+			reg.loge = log.logc.Warn()
+		case ErrorLevel:
+			reg.loge = log.logc.Error()
+		case FatalLevel:
+			reg.loge = log.logc.Fatal()
 	}
+	reg.level  = level
+	reg.active = true
+
 	return reg
 }
 
+func (log *logger) SetLevel(level Level) Logger {
+	zerolog.SetGlobalLevel(zerolog.InfoLevel)
+	return log
+}
 
 func (log *logger) Debug() Registry {
 	reg := newRegistry().setLevel(log, DebugLevel)
